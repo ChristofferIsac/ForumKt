@@ -4,26 +4,26 @@ import br.com.alura.forum.model.Curso
 import br.com.alura.forum.model.Topico
 import br.com.alura.forum.model.Usuario
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.RequestBody
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Service
-class TopicoService {
+class TopicoService(private var topicos: List<Topico> = ArrayList()) {
+
+
     fun Listar(): List<Topico> {
-        val topico = Topico(
-            id = 1,
-            titulo = "Duvida",
-            mensagem = "Variáveis",
-            curso = Curso(
-                id = 1,
-                nome = "Kotlin",
-                categoria = "Programação"
-            ),
-            autor = Usuario(
-                id = 1,
-                nome = "Isabelle",
-                email = "Belizotti@gmail.com"
-            )
-        )
-        return Arrays.asList(topico, topico, topico)
+        return topicos
+    }
+
+    fun buscarPorId(id: Long): Topico {
+        return topicos.stream().filter({
+            t -> t.id == id
+        }).findFirst().get()
+    }
+
+    fun cadastrar(@RequestBody topico: Topico): Void {
+        topicos.plus(topico)
+
     }
 }
